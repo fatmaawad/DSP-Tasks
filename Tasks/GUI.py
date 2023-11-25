@@ -3,6 +3,7 @@ from Task2 import *
 from Task3 import *
 from Task4 import*
 from Task5 import *
+from Task6 import *
 from helper_functions import *
 
 
@@ -28,6 +29,7 @@ def show_frame():
     frame3 = tk.Frame(main_frame, width=400, height=300)
     frame4 = tk.Frame(main_frame, width=400, height=300)
     frame5 = tk.Frame(main_frame, width=400, height=300)
+    frame6 = tk.Frame(main_frame, width=400, height=300)
     
  
 
@@ -147,8 +149,7 @@ def show_frame():
 
             print(selected_operation)
             print(selected_files)
-            # x1, y1 = read_signal_file(selected_files[0])
-            # x2, y2 = read_signal_file(selected_files[1]) if selected_files and len(selected_files) == 2 else (None, None)
+           
             
             print("x1:", x1)
             print("y1:", y1)
@@ -208,13 +209,13 @@ def show_frame():
             # display_file_signal(result_x, result_y)
             result_label.config(text="Operation: " + selected_operation)
             
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/Signal1+signal2.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/signal1-signal2.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/MultiplySignalByConstant-Signal1 - by 5.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/Output squaring signal 1.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/output shifting by minus 500.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/output accumulation for signal1.txt',result_x,result_y)
-            SignalSamplesAreEqual('D:/DSP/Task 1/output signals/normalize of signal 1 -- output.txt',x1,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/Signal1+signal2.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/signal1-signal2.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/MultiplySignalByConstant-Signal1 - by 5.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/Output squaring signal 1.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output shifting by minus 500.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output accumulation for signal1.txt',result_x,result_y)
+            SignalSamplesAreEqual('D:/DSP/Tasks/output signals/normalize of signal 1 -- output.txt',x1,result_y)
             
 
         except Exception as e:
@@ -245,7 +246,6 @@ def show_frame():
     phase_spectrum = None
 
 
-    ######FRaME 5#################
     
     def apply_and_display_dft():
         global signal_x, signal_y, frequencies, magnitude_spectrum, phase_spectrum  # Declare frequencies as global
@@ -267,10 +267,7 @@ def show_frame():
             print(f"Error: {str(e)}")
            
            
-    # def apply_and_display_idft(a,faze):
-    #     signal=IDFT(a,faze)
-    #     print("THIS IS IDFT")
-    #     plot_signal_DFT(np.arange(len(signal)),signal,"idft")
+    
         
 
     def apply_and_display_idft():
@@ -296,12 +293,9 @@ def show_frame():
         except Exception as e:
             print(f"Error: {str(e)}")
   
-    # filename=askopenfile()
-    # if filename is not None:
-    #     file_x,file_y=read_signal_file(filename.name)   
+    
         
     def modify_and_display(new_freq,new_amp,new_phase):
-        # global x,y
         try:
                 print("try")
                 file_x,file_y=get_signals()
@@ -316,9 +310,19 @@ def show_frame():
         except Exception as e:
             print(f"Error: {str(e)}")
 
+    
+    def apply_shifting():
+        x,y=get_signal_TimeDomain()
+        plot_signal(x,y,"b4 shifting")
+        res,y=shift_signal(x,y,int(shift_const_entry.get()))  
+        plot_signal(res,y,"shifted signal") 
+        print("+500")
+        SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output shifting by add 500.txt',res,y)
+        SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output shifting by minus 500.txt',res,y)
+
+ 
             
-            
-    #1
+    
     sampling_frequency_label = ttk.Label(frame5, text="Sampling Frequency (Hz)")
     sampling_frequency_label.pack(side="top", padx=10, pady=10)
     sampling_frequency_entry = ttk.Entry(frame5)
@@ -331,13 +335,6 @@ def show_frame():
     apply_IDFT_btn.pack(side="top", padx=10, pady=10)
     
   
-    
-    # choose_file_button = ttk.Button(frame5, text="Choose Signal File", command=choose_file)  ##working
-    # choose_file_button.pack(side="top", padx=10, pady=10)
-    
-    
-
-##########################################3
     #modification input
     freq=IntVar()
     amp=IntVar()
@@ -358,15 +355,13 @@ def show_frame():
     phase_label.pack(side="top", padx=10, pady=10)
     phase_entry = tk.Entry(frame5,textvariable=phase)
     phase_entry.pack(side="top", padx=10, pady=10)
-    
-    # def modify_and_display(file_x,file_y,new_freq,new_amp,new_phase):
-   
-    # file_x,file_y=get_signals()
+
     modify_button = ttk.Button(frame5, text="Modify and Update DFT", command=lambda:modify_and_display(frequency_entry.get(),amplitude_entry.get(),phase_entry.get()))
     modify_button.pack(side="top", padx=10, pady=10)
     
     apply_fur_idft = tk.Button(frame5, text="Compare",command=lambda: apply_comp())
     apply_fur_idft.pack(side="top",padx=10,pady=10)
+    
     ############Task 5################################
     coeff_label=ttk.Label(frame5,text="enter coefficients")
     coeff_label.pack(side="top",padx=10,pady=10)
@@ -378,11 +373,24 @@ def show_frame():
     
     remove_dc_btn=ttk.Button(frame5, text="remove dc", command=remove_dc_component)
     remove_dc_btn.pack(side="top",padx=10,pady=10)
-##################################################
     
-
-
+   ###############Task 6###############################
+   
+    window_size=ttk.Label(frame6,text="Enter window size")
+    window_size.pack(side="top",padx=10,pady=10)
+    window_size_entry=ttk.Entry(frame6)
+    window_size_entry.pack(side="top",padx=10,pady=10)
     
+    smooth_btn=ttk.Button(frame6, text="Apply Smoothing", command=lambda:smoothing(int(window_size_entry.get())))
+    smooth_btn.pack(side="top",padx=10,pady=10)
+
+    shift_const=ttk.Label(frame6,text="enter shifting constant")
+    shift_const.pack(side="top",padx=10,pady=10)
+    shift_const_entry=ttk.Entry(frame6)
+    shift_const_entry.pack(side="top",padx=10,pady=10)
+    
+    shift_btn=ttk.Button(frame6, text="Apply Shifting", command=apply_shifting)
+    shift_btn.pack(side="top",padx=10,pady=10)
 
 
 
@@ -391,13 +399,16 @@ def show_frame():
     frame3.pack(fill=tk.BOTH, expand=True)
     frame4.pack(fill=tk.BOTH, expand=True)
     frame5.pack(fill=tk.BOTH, expand=True)
+    frame6.pack(fill=tk.BOTH, expand=True)
 
 
     main_frame.add(frame1, text="file Input")
     main_frame.add(frame2, text="signal genration")
     main_frame.add(frame3, text="aritmatic opearations")
     main_frame.add(frame4, text="Siganl Quantization")
-    main_frame.add(frame5, text="Fourier Transform")
+    main_frame.add(frame5, text="Frequency Domain")
+    main_frame.add(frame6, text="Time Domain")
+    
 
 
     main_frame.pack(expand=True, fill=tk.BOTH)

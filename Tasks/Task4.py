@@ -60,7 +60,7 @@ def idft(X):
     return real_signal
    
    
-#2nd loop 
+
 def IDFT(amp,phase):
     print("in IDFT")
     N =len(amp)

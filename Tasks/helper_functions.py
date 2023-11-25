@@ -21,6 +21,17 @@ def read_signal_file(file_path):
         print(f"{file_path} not found. Make sure it exists in the same folder.")
         return None, None
 
+def get_signal_TimeDomain():
+    print ("get signals")
+    file_path = filedialog.askopenfilename(title="Choose a signal data file")
+    signal_x=[]
+    signal_y=[]
+    if file_path:
+            signal_x, signal_y = read_signal_file(file_path)
+            return signal_x, signal_y
+    else:
+            return None, None, None
+        
 def get_signals():
     print ("get signals")
     file_path = filedialog.askopenfilename(title="Choose a signal data file")
