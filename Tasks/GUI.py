@@ -5,7 +5,8 @@ from Task4 import*
 from Task5 import *
 from Task6 import *
 from helper_functions import *
-
+from TEST import*
+from TestCases_task6.Shifting_and_Folding.Shift_Fold_Signal import *
 
 
     
@@ -314,11 +315,37 @@ def show_frame():
     def apply_shifting():
         x,y=get_signal_TimeDomain()
         plot_signal(x,y,"b4 shifting")
-        res,y=shift_signal(x,y,int(shift_const_entry.get()))  
-        plot_signal(res,y,"shifted signal") 
+        #res,y=shift_signal(x,y,int(shift_const_entry.get()))  
+        #res=shift_sig(x,int(shift_const_entry.get()))  
+        shifted,y=shifting(x,y,int(shift_const_entry.get()))
+
+        plot_signal(shifted,y,"shifted signal") 
         print("+500")
-        SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output shifting by add 500.txt',res,y)
-        SignalSamplesAreEqual('D:/DSP/Tasks/output signals/output shifting by minus 500.txt',res,y)
+        ShiftSignalByConst(500,shifted,y)
+        ShiftSignalByConst(-500,shifted,y)
+
+    def apply_folding():
+        indices,samples=get_signal_TimeDomain()
+        
+        plot_signal(indices,samples,"b4 folding")
+        folded=fold_signal(samples)
+        print(folded)
+        plot_signal(indices,folded,"folded signal")
+        SignalSamplesAreEqual("fold","TestCases_task6\Shifting_and_Folding\Output_fold.txt", indices, folded)
+
+        
+    def apply_folding_and_shifting():
+        indices,samples=get_signal_TimeDomain()
+        folded_signal=fold_signal(samples)
+        shifted_signal,samples=shifting(indices,folded_signal,int(shift_const_entry.get()))
+        plot_signal(indices,samples,"original")
+        plot_signal(folded_signal,samples,"folded")
+        plot_signal(shifted_signal,samples,"fold-shift")
+        print(shifted_signal)
+        shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShifFoldedby500.txt",
+                          shifted_signal,folded_signal)
+        shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShiftFoldedby-500.txt",
+                          shifted_signal,folded_signal)
 
  
             
@@ -391,7 +418,15 @@ def show_frame():
     
     shift_btn=ttk.Button(frame6, text="Apply Shifting", command=apply_shifting)
     shift_btn.pack(side="top",padx=10,pady=10)
+    
+    fold_btn=ttk.Button(frame6, text="Apply Folding", command=apply_folding)
+    fold_btn.pack(side="top",padx=10,pady=10)
+    
+    shift_fold_btn=ttk.Button(frame6, text="Apply Shifting on a Folded signal", command=apply_folding_and_shifting)
+    shift_fold_btn.pack(side="top",padx=10,pady=10)
 
+    remove_dc_btn=ttk.Button(frame6, text="remove dc", command=remove_dc_time_domain)
+    remove_dc_btn.pack(side="top",padx=10,pady=10)
 
 
     frame1.pack(fill=tk.BOTH, expand=True)

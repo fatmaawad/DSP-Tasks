@@ -1,4 +1,4 @@
-def Shift_Fold_Signal(file_name,Your_indices,Your_samples):      
+def shift_Fold_Signal(file_name,Your_indices,Your_samples):      
     expected_indices=[]
     expected_samples=[]
     with open(file_name, 'r') as f:
