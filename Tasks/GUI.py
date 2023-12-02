@@ -4,6 +4,7 @@ from Task3 import *
 from Task4 import*
 from Task5 import *
 from Task6 import *
+from Task7 import *
 from helper_functions import *
 from TEST import*
 from TestCases_task6.Shifting_and_Folding.Shift_Fold_Signal import *
@@ -109,7 +110,7 @@ def show_frame():
    
     
     
-
+    #handles selecting more than one file 
     def select_files():
         global selected_files
         file_paths = filedialog.askopenfilenames(filetypes=[("Text Files", "*.txt")])
@@ -348,6 +349,15 @@ def show_frame():
                           shifted_signal,folded_signal)
 
  
+    def apply_convolution():
+        x1, y1 = get_signal_TimeDomain()
+        x2, y2 = get_signal_TimeDomain()
+        conv,new_idx=convolve(x1,y1,x2,y2)
+        print(conv)
+        print(new_idx)
+        plot_signal(x1,y1,"Signal 1")
+        plot_signal(x2,y2,"Signal 2")
+        plot_signal(new_idx,conv,"Convolved Signal")
             
     
     sampling_frequency_label = ttk.Label(frame5, text="Sampling Frequency (Hz)")
@@ -425,8 +435,13 @@ def show_frame():
     shift_fold_btn=ttk.Button(frame6, text="Apply Shifting on a Folded signal", command=apply_folding_and_shifting)
     shift_fold_btn.pack(side="top",padx=10,pady=10)
 
-    remove_dc_btn=ttk.Button(frame6, text="remove dc", command=remove_dc_time_domain)
+    remove_dc_btn=ttk.Button(frame6, text="Remove dc", command=remove_dc_time_domain)
     remove_dc_btn.pack(side="top",padx=10,pady=10)
+    
+    #####################TASK 7############################
+
+    conv_btn=ttk.Button(frame6, text="Apply Convolution", command=apply_convolution)
+    conv_btn.pack(side="top",padx=10,pady=10)
 
 
     frame1.pack(fill=tk.BOTH, expand=True)
