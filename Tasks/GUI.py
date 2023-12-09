@@ -5,6 +5,7 @@ from Task4 import*
 from Task5 import *
 from Task6 import *
 from Task7 import *
+from Task8 import *
 from helper_functions import *
 from TEST import*
 from TestCases_task6.Shifting_and_Folding.Shift_Fold_Signal import *
@@ -31,7 +32,7 @@ def show_frame():
     frame3 = tk.Frame(main_frame, width=400, height=300)
     frame4 = tk.Frame(main_frame, width=400, height=300)
     frame5 = tk.Frame(main_frame, width=400, height=300)
-    frame6 = tk.Frame(main_frame, width=400, height=300)
+    frame6 = tk.Frame(main_frame, width=400, height=300) 
     
  
 
@@ -343,10 +344,10 @@ def show_frame():
         plot_signal(folded_signal,samples,"folded")
         plot_signal(shifted_signal,samples,"fold-shift")
         print(shifted_signal)
-        shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShifFoldedby500.txt",
-                          shifted_signal,folded_signal)
-        shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShiftFoldedby-500.txt",
-                          shifted_signal,folded_signal)
+        # shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShifFoldedby500.txt",
+        #                   shifted_signal,folded_signal)
+        # shift_Fold_Signal("D:\DSP\Tasks\TestCases_task6\Shifting_and_Folding\Output_ShiftFoldedby-500.txt",
+        #                   shifted_signal,folded_signal)
 
  
     def apply_convolution():
@@ -358,6 +359,17 @@ def show_frame():
         plot_signal(x1,y1,"Signal 1")
         plot_signal(x2,y2,"Signal 2")
         plot_signal(new_idx,conv,"Convolved Signal")
+        
+        
+    def apply_correlation():
+        x1, y1 = get_signal_TimeDomain()
+        x2, y2 = get_signal_TimeDomain()
+        corr=normalized_cross_correlation(y1,y2)
+        plot_signal(x1,y1,"Signal 1")
+        plot_signal(x2,y2,"Signal 2")
+        plot_signal(x1,corr,"Correlated Signal")
+        Compare_Signals('Correlation\CorrOutput.txt', x1, corr)
+
             
     
     sampling_frequency_label = ttk.Label(frame5, text="Sampling Frequency (Hz)")
@@ -442,7 +454,11 @@ def show_frame():
 
     conv_btn=ttk.Button(frame6, text="Apply Convolution", command=apply_convolution)
     conv_btn.pack(side="top",padx=10,pady=10)
-
+    
+    #####################TASK 8############################
+    corr_btn=ttk.Button(frame6, text="Apply Correlation", command=apply_correlation)
+    corr_btn.pack(side="top",padx=10,pady=10)
+    
 
     frame1.pack(fill=tk.BOTH, expand=True)
     frame2.pack(fill=tk.BOTH, expand=True)
