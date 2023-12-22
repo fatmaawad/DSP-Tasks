@@ -10,6 +10,23 @@ from signalcompare import SignalComapreAmplitude, SignalComaprePhaseShift
 
 
 
+
+def DFT(sig):
+    N =len(sig)
+    n=np.arange(N)
+    xK=np.zeros(N,dtype=np.complex128)
+    for i in range(N):
+        xK[i]+=np.sum(sig*np.exp(-2j*np.pi*i*n/N))
+    return xK
+
+def amp_and_faze(xK):
+    A=[]
+    phase=[]
+    for x in xK:
+        A.append(np.sqrt((x.real**2) + (x.imag**2)))
+        phase.append( math.atan2(x.imag,x.real))
+    return A,phase
+
 def dft(signal):
     N = len(signal)
     X = []
@@ -25,24 +42,7 @@ def dft(signal):
     return X
 
 
-def DFT(signal):
-    N = len(signal)
-    X = []
-    
-    for k in range(N):
-        real_part = 0
-        imag_part = 0
-        for n in range(N):
-            angle = 2 * math.pi * k * n / N
-            real_part += signal[n] * math.cos(angle)
-            imag_part -= signal[n] * math.sin(angle)
-        X.append(complex(real_part, imag_part))
-    
-    # Calculate amplitude and phase shift
-    amplitude = [abs(x) for x in X]
-    phase_shift = [math.atan2(x.imag, x.real) for x in X]
-    # save_frequency_components(angle,amplitude,phase_shift)
-    return amplitude, phase_shift,N
+
 
 def idft(X):
     N = len(X)
@@ -58,7 +58,6 @@ def idft(X):
         real_signal.append(real_part / N)
     save_time_domain_signal(real_signal)
     return real_signal
-   
    
 
 def IDFT(amp,phase):

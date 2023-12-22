@@ -3,7 +3,7 @@ from Correlation.CompareSignal import Compare_Signals
 
 def normalized_cross_correlation(x1, x2):
     N = len(x1)
-    count_x1 = np.sum(np.square(x1))
+    count_x1 = np.sum(np.squarex(x1))
     count_x2 = np.sum(np.square(x2))
 
     correlation = np.zeros(len(x1))

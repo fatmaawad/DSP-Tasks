@@ -121,12 +121,12 @@ def quantize(frame):
                                                                                     choice.get(), user_input.get()))
     button2.place(y=20, x=600)
 
-# root = tk.Tk()
-# root.title("Signal Quantization")
-# root.geometry("800x800")
+root = tk.Tk()
+root.title("Signal Quantization")
+root.geometry("800x800")
 
-# # Call quantize to create the GUI
-# quantize(root)
+# Call quantize to create the GUI
+quantize(root)
 
-# # Start the main event loop
-# root.mainloop()
+# Start the main event loop
+root.mainloop()

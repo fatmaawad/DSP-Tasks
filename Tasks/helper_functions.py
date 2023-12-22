@@ -6,7 +6,7 @@ from tkinter import filedialog
 
 def read_signal_file(file_path):
     try:
-        print("read signal file")
+        # print("read signal file")
         with open(file_path, 'r') as file:
             for _ in range(3):
                 next(file)
@@ -14,7 +14,7 @@ def read_signal_file(file_path):
             signal_data = np.genfromtxt(file, delimiter=' ', dtype=float)
             signal_x = signal_data[:, 0]
             signal_y = signal_data[:, 1]
-            print("before exception")
+            # print("before exception")
             return signal_x, signal_y
            
     except FileNotFoundError:
@@ -22,7 +22,7 @@ def read_signal_file(file_path):
         return None, None
 
 def get_signal_TimeDomain():
-    print ("get signals")
+    # print ("get signals")
     file_path = filedialog.askopenfilename(title="Choose a signal data file")
     signal_x=[]
     signal_y=[]
@@ -33,7 +33,7 @@ def get_signal_TimeDomain():
             return None, None, None
         
 def get_signals():
-    print ("get signals")
+    # print ("get signals")
     file_path = filedialog.askopenfilename(title="Choose a signal data file")
     signal_x=[]
     signal_y=[]

@@ -122,30 +122,106 @@ def remove_dc_time_domain():
     print(amp)
     print(faze)
 
-  
+
+import numpy as np
+from Task4 import *
+import cmath
+from Convolution.ConvTest import ConvTest
+from Fast_Correlation.CompareSignal import Compare_Signals
+
+
+
+def fast_convolution(signal, filter,ind1,ind2):
+
+  # Zero-pad both signal and filter to equal length
+  signal_length = len(signal)
+  filter_length = len(filter)
+  padded_length = signal_length + filter_length - 1
+  padded_signal = np.pad(signal, (0, padded_length - signal_length), 'constant')
+  padded_filter = np.pad(filter, (0, padded_length - filter_length), 'constant')
+
+
+  # Apply DFT to both padded signal and filter
+  dft_signal=np.round(dft(padded_signal),1)
+  dft_filter=np.round(dft(padded_filter),10)
+
+   # Multiply in frequency domain
+  dft_result=np.array(dft_signal) * np.array(dft_filter)
+
+  # Apply IDFT to obtain convolution result
+  convolution_result=np.round(idft(dft_result),1)
+  output = np.round(convolution_result[:signal_length + filter_length - 1],1)
+
+ #compute indices
+  newmin = int(min(ind1) + min(ind2))
+  newmax = int(max(ind1) + max(ind2))
+  new_indices = list(range(newmin, newmax + 1))
+  #print(new_indices)
+
+  ConvTest(new_indices, output)
+  return output,new_indices
+
+
+def DFT(sig):
+    N =len(sig)
+    n=np.arange(N)
+    xK=np.zeros(N,dtype=np.complex128)
+    for i in range(N):
+        xK[i]+=np.sum(sig*np.exp(-2j*np.pi*i*n/N))
+    return xK
+
+def amp_and_faze(xK):
+    A=[]
+    phase=[]
+    for x in xK:
+        A.append(np.sqrt((x.real**2) + (x.imag**2)))
+        phase.append( math.atan2(x.imag,x.real))
+    return A,phase
+
+def fast_auto_correlation(signal):
+    sig1=DFT(signal)
+    sig1_conj=np.conjugate(sig1)
+    sig2=sig1_conj
+    sig1=np.array(sig1)
+    sig2=np.array(sig2)
+    mult=sig1*sig2
+    amp,faze=amp_and_faze(mult)
+    result=IDFT(amp,faze)
+    return result
+
+def fast_cross_correlation(signal1,signal2):
+    sig1=DFT(signal1)
+    print(sig1)
+    sig1_conj=np.conjugate(sig1)
+    # print(sig1_conj)
+    sig1=sig1_conj
+    sig2=DFT(signal2)
+    sig1=np.array(sig1)
+    sig2=np.array(sig2)
+    N=len(signal1)
+    mult=sig1*sig2
+    amp,faze=amp_and_faze(mult)
+    result=IDFT(amp,faze)
+    result=[x/N for x in result]
+    print (result)
+    # Compare_Signals(file_name,Your_indices,Your_samples)
+    return result
+   
+    
+    
+    
+
+
 x1, y1 = get_signal_TimeDomain()
 x2, y2 = get_signal_TimeDomain()
 # corr=Corr(y1,y2)
 
-c = normalized_cross_correlation(y1, y2)
-Compare_Signals('Correlation\CorrOutput.txt', x1, c)
+c = fast_cross_correlation(y1, y2)
+Compare_Signals('Fast_Correlation\Corr_Output.txt', x1, c)
 # Compare_Signals('Correlation\CorrOutput.txt',x1,c)
 
 # Example usage:
-signal = [3, 1, 4, 2, 5, 6, 7, 9, 8, 10]  # Replace this with your signal data
-window_size = int(input("Enter the window size for moving average calculation: "))
-
-moving_avg_result = moving_average(signal, window_size)
-sig = fold_signal(signal)
-# print(sig)
-# print("Moving averages:", moving_avg_result)
-# remove_dc_time_domain()
 
 
 
-arr = np.array([3, 2, 1, 1, 5])
-shifted_list = shift_list(arr)
-print(shifted_list)
 
-for item in shifted_list:
-    print(*item)

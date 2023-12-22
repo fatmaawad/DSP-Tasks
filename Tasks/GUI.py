@@ -6,6 +6,7 @@ from Task5 import *
 from Task6 import *
 from Task7 import *
 from Task8 import *
+from Task9 import *
 from helper_functions import *
 from TEST import*
 from TestCases_task6.Shifting_and_Folding.Shift_Fold_Signal import *
@@ -30,9 +31,10 @@ def show_frame():
     frame1 = tk.Frame(main_frame, width=400, height=300)
     frame2 = tk.Frame(main_frame, width=400, height=300)
     frame3 = tk.Frame(main_frame, width=400, height=300)
-    frame4 = tk.Frame(main_frame, width=400, height=300)
+    # frame4 = tk.Frame(main_frame, width=400, height=300)
     frame5 = tk.Frame(main_frame, width=400, height=300)
     frame6 = tk.Frame(main_frame, width=400, height=300) 
+    frame7 = tk.Frame(main_frame, width=400, height=300) 
     
  
 
@@ -369,6 +371,33 @@ def show_frame():
         plot_signal(x2,y2,"Signal 2")
         plot_signal(x1,corr,"Correlated Signal")
         Compare_Signals('Correlation\CorrOutput.txt', x1, corr)
+        
+    def apply_fast_auto_correlation():
+        x, y = get_signal_TimeDomain()
+        corr=fast_auto_correlation(y)
+        plot_signal(x,y,"Original Signal")
+        plot_signal(x,corr,"Correlated Signal")
+        Compare_Signals('Fast_Correlation\Corr_Output.txt', x, corr)
+
+    def apply_fast_cross_correlation():
+        x1, y1 = get_signal_TimeDomain()
+        x2, y2 = get_signal_TimeDomain()
+        corr=fast_correlation(y1,y2)
+        plot_signal(x1,y1,"Signal 1")
+        plot_signal(x2,y2,"Signal 2")
+        plot_signal(x1,corr,"Correlated Signal")
+        Compare_Signals('Fast_Correlation\Corr_Output.txt', x1, corr)
+        
+    def apply_fast_convolution():
+        x1, y1 = get_signal_TimeDomain()
+        x2, y2 = get_signal_TimeDomain()
+        conv,new_idx=fast_convolution(y1,y2,x1,x2)
+        print(conv)
+        print(new_idx)
+        plot_signal(x1,y1,"Signal 1")
+        plot_signal(x2,y2,"Signal 2")
+        plot_signal(new_idx,conv,"Convolved Signal")
+        ConvTest(new_idx, conv)
 
             
     
@@ -459,22 +488,37 @@ def show_frame():
     corr_btn=ttk.Button(frame6, text="Apply Correlation", command=apply_correlation)
     corr_btn.pack(side="top",padx=10,pady=10)
     
+    ########################Task 9############################# 
+    
+    # fast_auto_corr_btn=ttk.Button(frame7, text="Apply Fast Auto Correlation", command=apply_fast_auto_correlation)
+    # fast_auto_corr_btn.pack(side="top",padx=10,pady=10)
+    
+    fast_cross_corr_btn=ttk.Button(frame7, text="Apply Fast Correlation", command=apply_fast_cross_correlation)
+    fast_cross_corr_btn.pack(side="top",padx=10,pady=10)
+    
+    fast_conv_btn=ttk.Button(frame7, text="Apply Fast Convolution", command=apply_fast_convolution)
+    fast_conv_btn.pack(side="top",padx=10,pady=10)
+    
+    
+      
 
     frame1.pack(fill=tk.BOTH, expand=True)
     frame2.pack(fill=tk.BOTH, expand=True)
     frame3.pack(fill=tk.BOTH, expand=True)
-    frame4.pack(fill=tk.BOTH, expand=True)
+    # frame4.pack(fill=tk.BOTH, expand=True)
     frame5.pack(fill=tk.BOTH, expand=True)
     frame6.pack(fill=tk.BOTH, expand=True)
+    frame7.pack(fill=tk.BOTH, expand=True)
 
 
     main_frame.add(frame1, text="file Input")
     main_frame.add(frame2, text="signal genration")
     main_frame.add(frame3, text="aritmatic opearations")
-    main_frame.add(frame4, text="Siganl Quantization")
+    # main_frame.add(frame4, text="Siganl Quantization")
     main_frame.add(frame5, text="Frequency Domain")
     main_frame.add(frame6, text="Time Domain")
-    
+    main_frame.add(frame7, text="Fast")
+
 
 
     main_frame.pack(expand=True, fill=tk.BOTH)
